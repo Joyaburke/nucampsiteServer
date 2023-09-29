@@ -29,6 +29,7 @@ partnerRouter.route('/')
 })
 .put(authenticate.verifyUser, (req, res) => {
     res.statusCode = 403;
+    res.setHeader('Content-Type', 'text/plain');
     res.end('PUT operation not supported on /partners');
 })
 .delete(authenticate.verifyUser, (req, res, next) => {
@@ -49,13 +50,14 @@ partnerRouter.route('/:partnerId')
     Partner.findById(req.params.partnerId)
     .then(partner => {
         res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Content-Type', 'application/json');
         res.json(partner);
     })
     .catch(err => next(err));
 })
 .post(authenticate.verifyUser, (req, res) => {
     res.statusCode = 403;
+    res.setHeader('Content-Type', 'text/plain');
     res.end(`POST operation not supported on /partners/${req.params.partnerId}.`);
 })
 .put(authenticate.verifyUser, (req, res, next) => {
@@ -63,7 +65,7 @@ partnerRouter.route('/:partnerId')
         $set: req.body
     }, { new: true})
     .then(partner => {
-        res.statusCode = 200,
+        res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(partner);
     })
@@ -72,7 +74,7 @@ partnerRouter.route('/:partnerId')
 .delete(authenticate.verifyUser, (req, res, next) => {
     Partner.findByIdAndDelete(req.params.partnerId)
     .then(partner => {
-        res.statusCode = 200,
+        res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(partner);
     })

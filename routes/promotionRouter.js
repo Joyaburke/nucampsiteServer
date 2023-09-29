@@ -28,6 +28,7 @@ promotionRouter.route('/')
 })
 .put(authenticate.verifyUser, (req, res) => {
     res.statusCode = 403;
+    res.setHeader('Content-Type', 'text/plain');
     res.end('PUT operation not supported on /promotions');
 })
 .delete(authenticate.verifyUser, (req, res, next) => {
@@ -48,13 +49,14 @@ promotionRouter.route('/:promotionId')
     Promotion.findById(req.params.promotionId)
     .then(promotion => {
         res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Content-Type', 'application/json');
         res.json(promotion);
     })
     .catch(err => next(err));
 })
 .post(authenticate.verifyUser, (req, res) => {
     res.statusCode = 403;
+    res.setHeader('Content-Type', 'text/plain');
     res.end(`POST operation not supported on /promotion/${req.params.promotionId}.`);
 })
 .put(authenticate.verifyUser, (req, res, next) => {
@@ -62,7 +64,7 @@ promotionRouter.route('/:promotionId')
         $set: req.body
     }, { new: true})
     .then(promotion => {
-        res.statusCode = 200,
+        res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(promotion);
     })
@@ -71,7 +73,7 @@ promotionRouter.route('/:promotionId')
 .delete(authenticate.verifyUser, (req, res, next) => {
     Promotion.findByIdAndDelete(req.params.promotionId)
     .then(promotion => {
-        res.statusCode = 200,
+        res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(promotion);
     })
