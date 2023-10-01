@@ -14,7 +14,7 @@ const partnerRouter = require('./routes/partnerRouter');
 
 const mongoose = require('mongoose');
 
-const url = config.mongoUrl;
+const url = config.mongoUrl; //this is where we connect to the database
 const connect = mongoose.connect(url, {
     useCreateIndex: true,
     useFindAndModify: false,
@@ -35,7 +35,9 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser('12345-67890-09876-54321'));
+
+
+// app.use(auth);
 
 app.use(passport.initialize());
 

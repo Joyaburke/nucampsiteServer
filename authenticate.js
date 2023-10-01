@@ -1,10 +1,9 @@
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+const LocalStrategy = require("passport-local").Strategy;  //abiltiiy to use UN and PW from a form
 const User = require("./models/user");
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const jwt = require('jsonwebtoken');
-
+const jwt = require('jsonwebtoken');  // used to create, sign, and verify tokens
 const config = require('./config')
 
 exports.local = passport.use(new LocalStrategy(User.authenticate()));
@@ -18,6 +17,8 @@ exports.getToken = user => {
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = config.secretKey;
+
+//jwt_payload is what is inside the token
 
 exports.jwtPassport = passport.use(
     new JwtStrategy(
@@ -37,4 +38,15 @@ exports.jwtPassport = passport.use(
     )
 );
 
+
 exports.verifyUser = passport.authenticate('jwt', {session: false});
+
+exports.verifyAdmin = (req, res, next) => {
+    if (req.user.admin === true) {
+        return next();
+    } else {
+        const err = new Error(": You are not authorized to perform this operation!")
+        res.statusCode = 403
+        return next(err);
+    }
+}
