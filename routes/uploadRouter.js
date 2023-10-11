@@ -19,6 +19,8 @@ const imageFileFilter = (req, file, cb) => {
     cb(null, true);
 };
 
+//$ matters because it is indicating that those items have to be at the end of the string. \. is important because it says this is the character i'm looking for and the things that follow need to be this...
+
 const upload = multer({ storage: storage, fileFilter: imageFileFilter});
 
 const uploadRouter = express.Router();
